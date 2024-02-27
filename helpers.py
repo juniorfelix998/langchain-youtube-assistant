@@ -11,10 +11,11 @@ from langchain_openai.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 
 
-embeddings = OpenAIEmbeddings()
 
 
-def create_vector_db(video_url: str) -> FAISS:
+
+def create_vector_db(video_url: str,openai_api_key: str) -> FAISS:
+    embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
     loader = YoutubeLoader.from_youtube_url(video_url)
     transcript = loader.load()
 

@@ -25,7 +25,7 @@ if query and youtube_url:
         st.info("Please add your OpenAI API key to continue.")
         st.stop()
     else:
-        db = lch_helper.create_vector_db(youtube_url)
+        db = lch_helper.create_vector_db(youtube_url,openai_api_key)
 
         response, documents = lch_helper.get_response_from_query(
             db, query, openai_api_key
