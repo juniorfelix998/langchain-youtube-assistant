@@ -1,4 +1,5 @@
 import openai
+import requests
 
 from langchain_community.document_loaders import YoutubeLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -68,3 +69,8 @@ def check_openai_api_key(openai_api_key):
         return False
     else:
         return True
+
+
+def is_valid_youtube_video(video_url):
+    response = requests.get(video_url)
+    return "Video unavailable" in response.text
