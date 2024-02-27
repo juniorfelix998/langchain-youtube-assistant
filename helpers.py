@@ -1,8 +1,3 @@
-import os
-
-from dotenv import load_dotenv
-
-# from langchain.document_loaders import YoutubeLoader
 from langchain_community.document_loaders import YoutubeLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.prompts import PromptTemplate
@@ -12,17 +7,11 @@ from langchain_openai import OpenAI
 
 from langchain_openai.embeddings import OpenAIEmbeddings
 
-# from langchain.vectorstores import FAISS
+
 from langchain_community.vectorstores import FAISS
 
-load_dotenv()
-
-
-OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 
 embeddings = OpenAIEmbeddings()
-
-url = "https://www.youtube.com/watch?v=_qJphZ1Zajw"
 
 
 def create_vector_db(video_url: str) -> FAISS:
@@ -38,7 +27,7 @@ def create_vector_db(video_url: str) -> FAISS:
     return db
 
 
-def get_response_from_query(db, query, k=4):
+def get_response_from_query(db, query, openai_api_key, k=4):
     """
     gpt-3.5-turbo-instruct handles 4096 tokens. setting chink size to 1000 and
     4 maximizes the tokens to check
@@ -46,8 +35,7 @@ def get_response_from_query(db, query, k=4):
 
     documents = db.similarity_search(query, k=k)
     docs_page_content = " ".join([doc.page_content for doc in documents])
-
-    llm = OpenAI(model="gpt-3.5-turbo-instruct")
+    llm = OpenAI(model="gpt-3.5-turbo-instruct", openai_api_key=openai_api_key)
 
     prompt = PromptTemplate(
         input_variables=["question", "docs"],
@@ -66,4 +54,7 @@ def get_response_from_query(db, query, k=4):
             """,
     )
 
+    chain = LLMChain(llm=llm, prompt=prompt)
 
+    response = chain.run(question=query, docs=docs_page_content).replace("\n", "")
+    return response, documents
