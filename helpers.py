@@ -1,3 +1,5 @@
+import openai
+
 from langchain_community.document_loaders import YoutubeLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_core.prompts import PromptTemplate
@@ -11,10 +13,7 @@ from langchain_openai.embeddings import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
 
 
-
-
-
-def create_vector_db(video_url: str,openai_api_key: str) -> FAISS:
+def create_vector_db(video_url: str, openai_api_key: str) -> FAISS:
     embeddings = OpenAIEmbeddings(openai_api_key=openai_api_key)
     loader = YoutubeLoader.from_youtube_url(video_url)
     transcript = loader.load()
@@ -59,3 +58,13 @@ def get_response_from_query(db, query, openai_api_key, k=4):
 
     response = chain.run(question=query, docs=docs_page_content).replace("\n", "")
     return response, documents
+
+
+def check_openai_api_key(openai_api_key):
+    client = openai.OpenAI(api_key=openai_api_key)
+    try:
+        client.models.list()
+    except openai.AuthenticationError:
+        return False
+    else:
+        return True
