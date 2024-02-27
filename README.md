@@ -13,5 +13,11 @@ Reason: rely on a language model to reason (about how to answer based on provide
 
 The docs is located [here](https://python.langchain.com/docs/get_started)
 
-This app will help you answer questions from a youtube clip be it a podcast or a long video that you need some insights
-This is still work in progressed and it has been tested with mainly podcasts. 
+This app will help you answer questions from a youtube video be it a podcast or a long video that you need some insights on. 
+This is still work in progress and it has been tested with mainly podcasts. Asking it to summarize what was said
+about a certain area in a video. 
+
+For example in this [podcast](https://www.youtube.com/watch?v=_qJphZ1Zajw). One can ask 
+about What do they say about playing overseas
+
+
