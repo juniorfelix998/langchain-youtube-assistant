@@ -22,7 +22,7 @@ with st.sidebar:
 
 if query and youtube_url:
     if lch_helper.is_valid_youtube_video(youtube_url):
-        st.error("This video is unavailable please enter a valid youtube url")
+        st.error("This video is unavailable please enter a valid youtube url that starts with https://")
         st.stop()
     if not openai_api_key or not lch_helper.check_openai_api_key(openai_api_key):
         st.warning("Please add your OpenAI API key to continue or Wrong API Key.")

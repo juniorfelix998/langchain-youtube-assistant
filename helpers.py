@@ -1,5 +1,5 @@
 import openai
-import requests
+import re
 
 from langchain_community.document_loaders import YoutubeLoader
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -72,5 +72,10 @@ def check_openai_api_key(openai_api_key):
 
 
 def is_valid_youtube_video(video_url):
-    response = requests.get(video_url)
-    return "Video unavailable" in response.text
+    youtube_regex = (
+        r'^https://(www\.)?'
+        '(youtube|youtu|youtube-nocookie)\.(com|be)/'
+        '(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?\s]{11})$'
+    )
+    youtube_regex_match = re.match(youtube_regex, video_url)
+    return youtube_regex_match is None
